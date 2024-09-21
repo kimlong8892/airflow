@@ -5,8 +5,19 @@ import requests
 
 # Hàm Python sẽ được gọi khi DAG chạy
 def hello_airflow():
+    # Gửi yêu cầu GET tới API
     response_api = requests.get('https://khiphach.net/wp-json/wp/v2/posts')
-    print(response_api)
+
+    # Kiểm tra nếu yêu cầu thành công (status code 200)
+    if response_api.status_code == 200:
+        # Chuyển đổi phản hồi JSON thành đối tượng Python
+        data = response_api.json()
+
+        # In ra dữ liệu
+        print(data)
+    else:
+        # In ra lỗi nếu không thành công
+        print(f"Failed to retrieve data. Status code: {response_api.status_code}")
 
 # Định nghĩa các tham số cơ bản của DAG
 default_args = {
