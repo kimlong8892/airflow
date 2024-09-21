@@ -29,10 +29,7 @@ services:
       - ./requirements.txt:/requirements.txt
     ports:
       - "8181:8080"
-    command: >
-      bash -c "
-      pip install -r /requirements.txt &&
-      airflow webserver"
+    command: /bin/bash -c "pip install -r /requirements.txt && airflow webserver"
     restart: always
     networks:
       - airflow-network
@@ -49,10 +46,7 @@ services:
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
       - ./requirements.txt:/requirements.txt
-    command: >
-      bash -c "
-      pip install -r /requirements.txt &&
-      airflow scheduler"
+    command: /bin/bash -c "pip install -r /requirements.txt && airflow scheduler"
     restart: always
     networks:
       - airflow-network
@@ -67,7 +61,8 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
-    entrypoint: /bin/bash -c "airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname Admin --role Admin --email admin@example.com"
+      - ./requirements.txt:/requirements.txt
+    entrypoint: /bin/bash -c "pip install -r /requirements.txt && airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname Admin --role Admin --email admin@example.com"
     restart: always
     networks:
       - airflow-network
