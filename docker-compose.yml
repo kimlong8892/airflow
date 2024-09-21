@@ -26,9 +26,13 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
+      - ./requirements.txt:/requirements.txt
     ports:
       - "8181:8080"
-    command: webserver
+    command: >
+      bash -c "
+      pip install -r /requirements.txt &&
+      airflow webserver"
     restart: always
     networks:
       - airflow-network
@@ -44,7 +48,11 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
-    command: scheduler
+      - ./requirements.txt:/requirements.txt
+    command: >
+      bash -c "
+      pip install -r /requirements.txt &&
+      airflow scheduler"
     restart: always
     networks:
       - airflow-network

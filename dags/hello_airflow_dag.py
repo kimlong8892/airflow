@@ -1,10 +1,12 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
+import request
 
 # Hàm Python sẽ được gọi khi DAG chạy
 def hello_airflow():
-    print("Hello Airflow!")
+    response_api = request.get('https://khiphach.net/wp-json/wp/v2/posts')
+    print(response_api)
 
 # Định nghĩa các tham số cơ bản của DAG
 default_args = {
