@@ -18,7 +18,7 @@ services:
     depends_on:
       - mysql
     environment:
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'mysql+mysqlconnector://airflow:airflow@mysql/airflow'
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'mysql+mysqldb://airflow:airflow@mysql/airflow'
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
     volumes:
       - ./dags:/opt/airflow/dags
@@ -26,7 +26,7 @@ services:
       - ./plugins:/opt/airflow/plugins
     ports:
       - "8181:8080"
-    command: webserver
+    command: /bin/bash -c "sleep 10 && airflow webserver"
     restart: always
 
   airflow-scheduler:
@@ -34,13 +34,13 @@ services:
     depends_on:
       - mysql
     environment:
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'mysql+mysqlconnector://airflow:airflow@mysql/airflow'
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'mysql+mysqldb://airflow:airflow@mysql/airflow'
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
-    command: scheduler
+    command: /bin/bash -c "sleep 10 && airflow scheduler"
     restart: always
 
   airflow-init:
@@ -48,7 +48,7 @@ services:
     depends_on:
       - mysql
     environment:
-      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'mysql+mysqlconnector://airflow:airflow@mysql/airflow'
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: 'mysql+mysqldb://airflow:airflow@mysql/airflow'
     volumes:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
