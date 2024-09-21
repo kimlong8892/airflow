@@ -12,6 +12,8 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - airflow_network
 
   airflow-webserver:
     image: apache/airflow:latest
@@ -28,6 +30,8 @@ services:
       - "8181:8080"
     command: /bin/bash -c "sleep 10 && airflow webserver"
     restart: always
+    networks:
+      - airflow_network
 
   airflow-scheduler:
     image: apache/airflow:latest
@@ -42,6 +46,8 @@ services:
       - ./plugins:/opt/airflow/plugins
     command: /bin/bash -c "sleep 10 && airflow scheduler"
     restart: always
+    networks:
+      - airflow_network
 
   airflow-init:
     image: apache/airflow:latest
@@ -53,8 +59,14 @@ services:
       - ./dags:/opt/airflow/dags
       - ./logs:/opt/airflow/logs
       - ./plugins:/opt/airflow/plugins
-    entrypoint: /bin/bash -c "airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname Admin --role Admin --email admin@example.com"
+    entrypoint: /bin/bash -c "sleep 10 && airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname Admin --role Admin --email admin@example.com"
     restart: always
+    networks:
+      - airflow_network
 
 volumes:
   mysql_data:
+
+networks:
+  airflow_network:
+    driver: bridge
