@@ -61,6 +61,8 @@ services:
       - ./plugins:/opt/airflow/plugins
     entrypoint: /bin/bash -c "until nc -z mysql_db 3306; do echo 'Waiting for MySQL...'; sleep 5; done; airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname Admin --role Admin --email admin@example.com"
     restart: "no"
+    networks:
+      - airflow-network
 
 volumes:
   mysql_data:
