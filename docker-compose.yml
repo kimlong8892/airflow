@@ -46,6 +46,10 @@ services:
       - ./plugins:/opt/airflow/plugins
     command: scheduler
     restart: always
+    deploy:
+      replicas: 6
+      restart_policy:
+        condition: on-failure
     networks:
       - airflow-network
 
