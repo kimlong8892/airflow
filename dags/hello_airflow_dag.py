@@ -4,14 +4,16 @@ from airflow.providers.mysql.hooks.mysql import MySqlHook
 from datetime import datetime, timedelta
 import requests
 
+
 def get_data_from_db():
     # Kết nối đến MySQL và truy vấn dữ liệu
     hook = MySqlHook(mysql_conn_id='laravel_db')
     connection = hook.get_conn()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM dags")
-    data = cursor.fetchall()
-    cursor.close()
+
+    with connection.cursor(DictCursor) as cursor:  # Sử dụng DictCursor
+        cursor.execute("SELECT * FROM dags")
+        data = cursor.fetchall()
+
     connection.close()
     return data
 
