@@ -28,19 +28,20 @@ default_args = {
 }
 
 # Khởi tạo DAG
-with DAG(
-    dag_id='hello_airflow_dag',
-    default_args=default_args,
-    schedule_interval='*/1 * * * *',  # Lịch chạy mỗi 1 phút
-    catchup=False,  # Không chạy lại các ngày trước đó
-    tags=['example'],
-) as dag:
+for i in range(40):
+    with DAG(
+        dag_id='hello_airflow_dag' + str(i),
+        default_args=default_args,
+        schedule_interval='*/1 * * * *',  # Lịch chạy mỗi 1 phút
+        catchup=False,  # Không chạy lại các ngày trước đó
+        tags=['example'],
+    ) as dag:
 
-    # Định nghĩa task sử dụng PythonOperator
-    hello_task = PythonOperator(
-        task_id='hello_task',
-        python_callable=hello_airflow,  # Hàm Python sẽ được gọi khi task chạy
-    )
+        # Định nghĩa task sử dụng PythonOperator
+        hello_task = PythonOperator(
+            task_id='hello_task',
+            python_callable=hello_airflow,  # Hàm Python sẽ được gọi khi task chạy
+        )
 
-    # Cài đặt thứ tự task
-    hello_task
+        # Cài đặt thứ tự task
+        hello_task
