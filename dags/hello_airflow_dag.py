@@ -10,12 +10,16 @@ def get_data_from_db():
     hook = MySqlHook(mysql_conn_id='laravel_db')
     connection = hook.get_conn()
 
-    with connection.cursor(DictCursor) as cursor:  # Sử dụng DictCursor
+    with connection.cursor() as cursor:  # Sử dụng cursor bình thường
         cursor.execute("SELECT * FROM dags")
-        data = cursor.fetchall()
+        data = cursor.fetchall()  # Trả về danh sách các tuple
 
     connection.close()
-    return data
+
+    # Chuyển đổi danh sách tuple thành danh sách dictionary
+    columns = [col[0] for col in cursor.description]  # Lấy tên cột
+    result = [dict(zip(columns, row)) for row in data]  # Tạo dictionary cho mỗi hàng
+    return result
 
 def hello_airflow():
     response_api = requests.get('https://khiphach.net/wp-json/wp/v2/posts')
