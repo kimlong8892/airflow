@@ -47,7 +47,7 @@ services:
     command: scheduler
     restart: always
     deploy:
-      replicas: 6
+      replicas: 10
       restart_policy:
         condition: on-failure
     networks:

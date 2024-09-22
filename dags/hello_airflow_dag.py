@@ -2,22 +2,17 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 import requests
+import time
 
 # Hàm Python sẽ được gọi khi DAG chạy
 def hello_airflow():
     # Gửi yêu cầu GET tới API
     response_api = requests.get('https://khiphach.net/wp-json/wp/v2/posts')
+    response_api_test = requests.get('https://khiphach.net/wp-json/wp/v2/posts')
 
-    # Kiểm tra nếu yêu cầu thành công (status code 200)
-    if response_api.status_code == 200:
-        # Chuyển đổi phản hồi JSON thành đối tượng Python
-        data = response_api.json()
-
-        # In ra dữ liệu
-        print(data)
-    else:
-        # In ra lỗi nếu không thành công
-        print(f"Failed to retrieve data. Status code: {response_api.status_code}")
+    print(response_api.json())
+    print(response_api_test.json())
+    time.sleep(5)
 
 # Định nghĩa các tham số cơ bản của DAG
 default_args = {
@@ -28,7 +23,7 @@ default_args = {
 }
 
 # Khởi tạo DAG
-for i in range(40):
+for i in range(100):
     with DAG(
         dag_id='hello_airflow_dag' + str(i),
         default_args=default_args,
@@ -44,4 +39,4 @@ for i in range(40):
         )
 
         # Cài đặt thứ tự task
-        hello_task
+        var = hello_task >> hello_task >> hello_task >> hello_task
