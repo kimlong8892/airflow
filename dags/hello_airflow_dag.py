@@ -12,7 +12,6 @@ def hello_airflow():
 
     print(response_api.json())
     print(response_api_test.json())
-    time.sleep(5)
 
 # Định nghĩa các tham số cơ bản của DAG
 default_args = {
@@ -35,8 +34,28 @@ for i in range(100):
         # Định nghĩa task sử dụng PythonOperator
         hello_task = PythonOperator(
             task_id='hello_task',
-            python_callable=hello_airflow,  # Hàm Python sẽ được gọi khi task chạy
+            python_callable=hello_airflow,
+        )
+
+        hello_task_1 = PythonOperator(
+            task_id='hello_task_1',
+            python_callable=hello_airflow,
+        )
+
+        hello_task_2 = PythonOperator(
+            task_id='hello_task_2',
+            python_callable=hello_airflow,
+        )
+
+        hello_task_3 = PythonOperator(
+            task_id='hello_task_3',
+            python_callable=hello_airflow,
+        )
+
+        hello_task_4 = PythonOperator(
+            task_id='hello_task_4',
+            python_callable=hello_airflow,
         )
 
         # Cài đặt thứ tự task
-        var = hello_task >> hello_task >> hello_task >> hello_task
+        hello_task >> hello_task_1 >> hello_task_2 >> [hello_task_3 >> hello_task_4]
