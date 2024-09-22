@@ -43,6 +43,7 @@ def create_dag(dag_id, schedule_interval):
         schedule_interval=schedule_interval,
         catchup=False,
         tags=['dynamic'],
+        is_paused_upon_creation=False
     )
 
     with dag:
@@ -50,6 +51,13 @@ def create_dag(dag_id, schedule_interval):
             task_id='hello_task',
             python_callable=hello_airflow,
         )
+
+        hello_task_1 = PythonOperator(
+            task_id='hello_task_1',
+            python_callable=hello_airflow,
+        )
+
+        [hello_task >> hello_task_1]
 
     return dag
 
