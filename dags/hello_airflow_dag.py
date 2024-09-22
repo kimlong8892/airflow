@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import requests
 import time
 import pymysql
+from pymysql.cursors import DictCursor
 
 def get_data_from_db():
     # Replace with actual logic to connect and query the database
