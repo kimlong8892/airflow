@@ -1,23 +1,17 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.providers.mysql.hooks.mysql import MySqlHook
 from datetime import datetime, timedelta
 import requests
-import time
-import pymysql
-from pymysql.cursors import DictCursor
 
 def get_data_from_db():
-    # Replace with actual logic to connect and query the database
-    connection = pymysql.connect(
-        host='0.0.0.0',
-        user='admin',
-        password='Admin123',
-        database='laravel_db',
-        cursorclass=DictCursor
-    )
+    # Kết nối đến MySQL và truy vấn dữ liệu
+    hook = MySqlHook(mysql_conn_id='laravel_db')
+    connection = hook.get_conn()
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM dags")
     data = cursor.fetchall()
+    cursor.close()
     connection.close()
     return data
 
@@ -31,7 +25,7 @@ def hello_airflow():
 def create_dag(dag_id, schedule_interval):
     default_args = {
         'owner': 'airflow',
-        'start_date': days_ago(1),
+        'start_date': datetime(2023, 9, 20),  # Đặt lại giá trị cho start_date
         'retries': 1,
     }
 
@@ -48,10 +42,8 @@ def create_dag(dag_id, schedule_interval):
             task_id='hello_task',
             python_callable=hello_airflow,
         )
-        hello_task
 
     return dag
-
 
 data = get_data_from_db()
 for i, row in enumerate(data):
