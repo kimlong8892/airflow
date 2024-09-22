@@ -58,4 +58,4 @@ for i in range(40):
         )
 
         # Cài đặt thứ tự task
-        hello_task >> hello_task_1 >> hello_task_2 >> [hello_task_3 >> hello_task_4]
+        hello_task >> hello_task_1
