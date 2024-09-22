@@ -14,10 +14,12 @@ def get_data_from_db():
         cursor.execute("SELECT * FROM dags")
         data = cursor.fetchall()  # Trả về danh sách các tuple
 
+        # Lấy tên cột sau khi thực hiện truy vấn
+        columns = [col[0] for col in cursor.description]  # Lấy tên cột
+
     connection.close()
 
     # Chuyển đổi danh sách tuple thành danh sách dictionary
-    columns = [col[0] for col in cursor.description]  # Lấy tên cột
     result = [dict(zip(columns, row)) for row in data]  # Tạo dictionary cho mỗi hàng
     return result
 
