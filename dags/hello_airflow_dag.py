@@ -22,7 +22,7 @@ default_args = {
 }
 
 # Khởi tạo DAG
-for i in range(40):
+for i in range(10):
     with DAG(
         dag_id='hello_airflow_dag' + str(i),
         default_args=default_args,
@@ -39,21 +39,6 @@ for i in range(40):
 
         hello_task_1 = PythonOperator(
             task_id='hello_task_1',
-            python_callable=hello_airflow,
-        )
-
-        hello_task_2 = PythonOperator(
-            task_id='hello_task_2',
-            python_callable=hello_airflow,
-        )
-
-        hello_task_3 = PythonOperator(
-            task_id='hello_task_3',
-            python_callable=hello_airflow,
-        )
-
-        hello_task_4 = PythonOperator(
-            task_id='hello_task_4',
             python_callable=hello_airflow,
         )
 
