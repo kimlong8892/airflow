@@ -22,7 +22,7 @@ default_args = {
 }
 
 # Khởi tạo DAG
-for i in range(100):
+for i in range(40):
     with DAG(
         dag_id='hello_airflow_dag' + str(i),
         default_args=default_args,
