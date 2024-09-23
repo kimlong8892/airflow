@@ -10,7 +10,7 @@ def get_data_from_db():
     connection = hook.get_conn()
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT c.*, d.url as website_url, d.name as website_name FROM crawl_categories c INNER JOIN website_dags d ON c.website_dag_id = d.id")
+        cursor.execute("SELECT c.*, d.url as website_url, d.dag_id as website_name FROM crawl_categories c INNER JOIN website_dags d ON c.website_dag_id = d.id")
         data = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
 
