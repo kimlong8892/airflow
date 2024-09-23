@@ -54,6 +54,6 @@ def create_dag(dag_id, schedule_interval, row):
 
 data = get_data_from_db()
 for i, row in enumerate(data):
-    dag_id = row['slug'] + "_" + row['id']
+    dag_id = str(row['slug']) + "_" + str(row['id'])
     schedule_interval = '0 * * * *'
     globals()[dag_id] = create_dag(dag_id, schedule_interval, row)
