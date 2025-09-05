@@ -1,0 +1,13 @@
+version: 1
+settings:
+  reviewer:
+    languages: ["python", "javascript", "typescript", "go", "java"]
+    natural_languages: ["vi"]
+    strictness: medium
+    exclude:
+      - "docs/"
+      - "tests/fixtures/"
+  rules:
+    - name: "No TODOs in PRs"
+      pattern: "TODO"
+      level: warning
