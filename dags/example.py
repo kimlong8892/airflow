@@ -4,9 +4,11 @@ from datetime import datetime
 import os
 
 def create_file(**kwargs):
+    # create file
     print("File has been created at /tmp/example_file.txt")
 
 def write_to_file(**kwargs):
+    print("Content has been written to the file.")
     print("Content has been written to the file.")
 
 def delete_file(**kwargs):
