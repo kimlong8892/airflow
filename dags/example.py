@@ -1,14 +1,19 @@
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python import PythonOperator
 from datetime import datetime
 import os
 
-def create_file(**kwargs):
-    # create file
-    print("File has been created at /tmp/example_file.txt")
+def create_file():
+    path = "/tmp/example_file.txt"
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "a", encoding="utf-8"):
+        pass
+    print(f"File has been created at {path}")
 
-def write_to_file(**kwargs):
-    print("Content has been written to the file.")
+def write_to_file():
+    path = "/tmp/example_file.txt"
+    with open(path, "a", encoding="utf-8") as f:
+        f.write("Example content\n")
     print("Content has been written to the file.")
 
 def delete_file(**kwargs):
